@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>微信聊天记录导出</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="logo">💬</span>
+    <div>
+      <h1>微信聊天记录导出</h1>
+      <div class="sub">仅在本机运行 · 数据不上传 · 支持微信 4.x</div>
+    </div>
+  </div>
+  <button id="btnQuit" class="ghost" title="关闭本地服务">退出</button>
+</header>
+
+<main>
+  <div id="integrityWarn" class="warnbox hidden"></div>
+  <section class="card" id="step1">
+    <h2><span class="idx">1</span> 检测环境</h2>
+    <div class="row">
+      <button id="btnScan" class="primary">自动检测微信与账号</button>
+      <span id="scanMsg" class="hint">点击后自动查找微信安装位置与聊天数据</span>
+    </div>
+    <div id="envInfo" class="env hidden"></div>
+  </section>
+
+  <section class="card hidden" id="step2">
+    <h2><span class="idx">2</span> 选择账号与会话</h2>
+    <div class="row">
+      <label>账号</label>
+      <select id="accountSelect"></select>
+      <span class="hint" id="accountHint"></span>
+    </div>
+    <div class="row">
+      <label>会话</label>
+      <button id="btnChats" class="ghost">加载会话列表</button>
+      <label class="inline"><input type="checkbox" id="chkAll" checked> 全部会话</label>
+      <span class="hint" id="chatHint">默认导出全部会话</span>
+    </div>
+    <div class="row">
+      <label for="manualKey">密钥</label>
+      <input id="manualKey" type="text" placeholder="可选：64 位十六进制密钥（自动获取失败时手动填写）">
+    </div>
+    <div class="row">
+      <label for="chatSearch">搜索</label>
+      <input id="chatSearch" type="text" placeholder="输入会话名称或微信号中的字符，实时筛选">
+      <span class="hint" id="searchHint"></span>
+    </div>
+    <div id="chatList" class="chat-list hidden"></div>
+  </section>
+
+  <section class="card hidden" id="step3">
+    <h2><span class="idx">3</span> 导出设置并开始</h2>
+    <div class="row">
+      <label>格式</label>
+      <label class="inline"><input type="checkbox" id="fmtHtml" checked> HTML（可离线浏览）</label>
+      <label class="inline"><input type="checkbox" id="fmtCsv"> CSV</label>
+      <label class="inline"><input type="checkbox" id="fmtJson"> JSON</label>
+      <label class="inline"><input type="checkbox" id="fmtTxt"> TXT</label>
+      <label class="inline"><input type="checkbox" id="fmtXlsx"> Excel</label>
+    </div>
+    <div class="row">
+      <label>时间范围</label>
+      <button id="btnRange" class="ghost">选择时间段…</button>
+      <span class="hint" id="rangeLabel">全部时间</span>
+      <button id="btnRangeClear" class="ghost hidden">清除</button>
+    </div>
+    <div class="row">
+      <label class="inline"><input type="checkbox" id="chkMedia" checked> 导出图片/文件</label>
+      <label class="inline"><input type="checkbox" id="chkSystem" checked> 包含系统消息</label>
+    </div>
+    <div class="row">
+      <label for="outDir">输出目录</label>
+      <input id="outDir" type="text" placeholder="选择父目录，导出时自动新建“日期-时间”子文件夹；留空则自动选择可写位置">
+      <button id="btnPick" class="ghost">选择目录…</button>
+    </div>
+    <div class="row">
+      <button id="btnStart" class="primary big">开始导出</button>
+      <button id="btnOpen" class="ghost">打开输出目录</button>
+    </div>
+    <div id="progressWrap" class="hidden">
+      <div class="bar"><div id="bar" class="fill"></div></div>
+      <div id="stage" class="hint"></div>
+      <pre id="log" class="log"></pre>
+    </div>
+  </section>
+</main>
+
+<footer>本工具只读取本机微信数据，导出过程不联网。请仅用于备份您自己合法持有的聊天记录。</footer>
+
+<div id="rangeModal" class="modal hidden">
+  <div class="modal-card">
+    <h3>选择导出时间段</h3>
+    <div class="row">
+      <label for="dateFrom">起始日期</label>
+      <input type="date" id="dateFrom">
+    </div>
+    <div class="row">
+      <label for="dateTo">终止日期</label>
+      <input type="date" id="dateTo">
+    </div>
+    <div class="hint">按本地时间，从起始日 00:00 到终止日 23:59；只导出该区间内的消息。</div>
+    <div class="row modal-actions">
+      <button id="btnRangeOk" class="primary">确定</button>
+      <button id="btnRangeCancel" class="ghost">取消</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# ---- build / packaging outputs (large, reproducible) ----
+/dist/
+/build/
+/.tmp/
+/.venv/
+
+# ---- vendored third-party dependencies (re-installed by tools\build.ps1) ----
+/vendor/
+
+# ---- python caches ----
+__pycache__/
+*.py[cod]
+
+# ---- local research artefacts: may contain REAL decrypted chat data ----
+/probe/decrypted/
+/probe/*.log
+/probe/*.log.err
+/probe/*.err
+
+# ---- runtime work dirs: plaintext copies of REAL databases live here ----
+/WeChatExporter/
+/work/
+
+# ---- local scratch ----
+*.zip
+*.7z
+
+# ---- local research scripts: reference real account ids and paths ----
+/probe/
